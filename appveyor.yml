@@ -1,0 +1,19 @@
+version: 1.0.{build}
+init:
+- ps: >-
+    if ($env:APPVEYOR_JOB_NAME.Contains("C1")) {
+        Start-AppveyorBuild -ApiKey $env:API_KEY -ProjectSlug 'paralleltests-lo9hm'
+    }
+environment:
+  API_KEY:
+    secure: YIuqOcciVmoaQJhMWRoknEDuDMTUJ+oMnHCXQmBlgv4=
+install:
+- cmd: nuget restore
+build:
+  verbosity: minimal
+test:
+  categories:
+  - - C1
+  - - C2
+  - - C3
+  - - C4
