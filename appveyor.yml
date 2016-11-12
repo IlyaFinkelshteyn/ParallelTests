@@ -5,15 +5,11 @@ environment:
     secure: YIuqOcciVmoaQJhMWRoknEDuDMTUJ+oMnHCXQmBlgv4=
     
 install:
-- ps: if ($env:APPVEYOR_JOB_NAME.Contains("C1")) {Start-AppveyorBuild -ApiKey $env:API_KEY -ProjectSlug 'ParallelTestsCreateDb' -EnvironmentVariables @{callerCommit = $env:APPVEYOR_REPO_COMMIT'}}
-#- ps: .\WaitForDbCreaionBuild.ps1 -AccountName $env:APPVEYOR_ACCOUNT_NAME -ProjectSlug "paralleltests-lo9hm" -ApiKey $env:API_KEY -RepoCommit $env:APPVEYOR_REPO_COMMIT -TimeOutMins 1
+- ps: .\WaitForDbCreaionBuild.ps1 -JobName $env:APPVEYOR_JOB_NAME -masterCategory "C1" -AccountName $env:APPVEYOR_ACCOUNT_NAME -ProjectSlug "paralleltests-lo9hm" -ApiKey $env:API_KEY -branch $env:APPVEYOR_REPO_BRANCH -RepoCommit $env:APPVEYOR_REPO_COMMIT -TimeOutMins 1
 - cmd: nuget restore
 
 build:
   verbosity: minimal
-  
-before_test:
-- ps: write-host $env:APPVEYOR_REPO_COMMIT
 
 test:
   categories:
