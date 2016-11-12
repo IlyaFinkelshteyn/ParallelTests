@@ -15,6 +15,7 @@ namespace ParallelTests
         public void TestMethod1()
         {
             Assert.Pass("Your first passing test");
+            //random change
         }
 
         [Test]
