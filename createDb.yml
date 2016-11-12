@@ -1,9 +1,0 @@
-version: 1.0.{build}
-clone_script:
-- ps: Write-host "Skipping clone as this is only DB creation build"
-install:
-- ps: >-
-    Write-host "Creating database..."
-
-    Start-sleep 20
-build: off
