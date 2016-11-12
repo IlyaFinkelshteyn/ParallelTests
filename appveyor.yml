@@ -5,7 +5,7 @@ environment:
     secure: YIuqOcciVmoaQJhMWRoknEDuDMTUJ+oMnHCXQmBlgv4=
     
 install:
-- ps: .\WaitForDbCreaionBuild.ps1 -JobName $env:APPVEYOR_JOB_NAME -masterCategory "C1" -AccountName $env:APPVEYOR_ACCOUNT_NAME -ProjectSlug "paralleltests-lo9hm" -ApiKey $env:API_KEY -branch $env:APPVEYOR_REPO_BRANCH -RepoCommit $env:APPVEYOR_REPO_COMMIT -TimeOutMins 1
+- ps: .\CreateDb.ps1 -JobName $env:APPVEYOR_JOB_NAME -masterCategory "C1" -AccountName $env:APPVEYOR_ACCOUNT_NAME -ProjectSlug "paralleltests-lo9hm" -ApiKey $env:API_KEY -branch $env:APPVEYOR_REPO_BRANCH -RepoCommit $env:APPVEYOR_REPO_COMMIT -TimeOutMins 1
 - cmd: nuget restore
 
 build:
