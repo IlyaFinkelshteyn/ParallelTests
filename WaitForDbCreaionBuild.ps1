@@ -52,9 +52,11 @@
         while(!$dbCreated -and ([datetime]::Now) -lt $stop) {
         
             $project = Invoke-RestMethod -Uri "https://ci.appveyor.com/api/projects/$AccountName/$ProjectSlug" -Headers $headers -Method GET
-            Write-host "Waiting for $AccountName/$ProjectSlug build, commit $RepoCommit..."
-            Write-host "Current status:"
-            $project.build.status
+            
+	    Write-host "Waiting for $AccountName/$ProjectSlug build, commit $RepoCommit..."
+            Write-host "Last build commit is: " + $project.build.commitId
+	    Write-host "Last build status status:" + $project.build.status
+	    
             $dbCreated = ($project.build.commitId -eq $RepoCommit) -and ($project.build.status -eq "success")
             if (!$dbCreated) {
                 Start-sleep 5
