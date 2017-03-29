@@ -3,6 +3,7 @@ version: 1.0.{build}
 environment:
   API_KEY:
     secure: YIuqOcciVmoaQJhMWRoknEDuDMTUJ+oMnHCXQmBlgv4=
+  TimeOutMins: 5
     
 install:
 - cmd: nuget restore
@@ -16,3 +17,29 @@ test:
   - - C2
   - - C3
   - - C4
+
+before_deploy:
+- ps: | 
+
+if ($env:APPVEYOR_JOB_NUMBER -ne 1) {return}
+
+[datetime]$stop = ([datetime]::Now).AddMinutes($TimeOutMins)
+[bool]$success = $false
+
+while(!$success -and ([datetime]::Now) -lt $stop) {
+
+    $project = Invoke-RestMethod -Uri "https://ci.appveyor.com/api/projects/$AccountName/$ProjectSlug" -Headers $headers -Method GET
+
+    $project.build.jobs | foreach-object {$_.status}
+    
+    $success = $false # todo
+    if (!$success) {
+Start-sleep 5
+    }
+}
+
+if (!$success) {
+    throw "Test jobs were not finished in $TimeOutMins minutes"
+}
+
+
